@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="addInput">
+  <button id="addBtn">添加</button>
+  <div id="textBox"></div>
+  <div id="error"></div>
+  <canvas id="myCanvas" width="800" height="800"></canvas>
+  <script src="./draw.js"></script>
+  <script src="./sudoku.js"></script>
+
+  <script>
+    const manager = new WordInfoManager();
+    const words = [];
+    const error = document.getElementById('error')
+    
+    function renderer() {
+      const { state, data, msg } = manager.sudoku(words);
+      if (state) {
+        drawCanvas(data);
+        error.innerHTML = ''
+      } else {
+        error.innerHTML =  msg + '没有合适的插入位置'
+      }
+    }
+
+    const addBtn = document.getElementById('addBtn');
+    const input = document.getElementById('addInput');
+    const textBox = document.getElementById('textBox');
+    addBtn.addEventListener('click', function() {
+      if (input.value) {
+        words.unshift(input.value);
+        renderer();
+        input.value = null;
+        textBox.innerHTML = '当前的单词：' + words.join(',')
+      }
+    })
+  </script>
+</body>
+</html>
